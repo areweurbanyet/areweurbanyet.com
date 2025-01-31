@@ -1,0 +1,128 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches:
+      - master
+  create:
+    tags:
+      - "v*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Deploy preview build if commit was pushed to master
+  deploy-preview:
+    name: Deploy to Preview
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment: Preview
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      # Cache node_modules and only invalidate it if package-lock.json changes
+      - name: Check for cached dependencies
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # Cache the build and only invalidate it if the source code changes
+      - name: Check for cached build
+        uses: actions/cache@v3
+        id: cache-dist
+        with:
+          path: dist
+          key: |
+            ${{ runner.os }}-dist-${{ hashFiles(
+              '**/*',
+              '!**/node_modules/**',
+              '!**/.netlify/**',
+              '!**/.vscode/**',
+              '!**/.github/**',
+              '!**/.github/workflows/**'
+            ) }}
+      - name: Build project
+        if: steps.cache-dist.outputs.cache-hit != 'true'
+        run: npm run build
+
+      # Deploy preview build to Netlify with commit message
+      - name: Deploy to Netlify
+        run: |
+          COMMIT_MSG=$(echo "${{ github.event.head_commit.message }}" | head -n 1)
+          COMMIT_MSG="${COMMIT_MSG//\"/\\\"}"
+          npx netlify-cli@17 deploy \
+            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site=${{ secrets.NETLIFY_SITE_ID }} \
+            --message="$COMMIT_MSG" \
+            --alias=preview \
+            --dir=dist
+
+  # Deploy production build if tag was created
+  deploy-production:
+    name: Deploy to Production
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+
+      # Cache node_modules and only invalidate it if package-lock.json changes
+      - name: Check for cached dependencies
+        uses: actions/cache@v3
+        id: cache-deps
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # Cache the build and only invalidate it if the source code changes
+      - name: Check for cached build
+        uses: actions/cache@v3
+        id: cache-dist
+        with:
+          path: dist
+          key: |
+            ${{ runner.os }}-dist-${{ hashFiles(
+              '**/*',
+              '!**/node_modules/**',
+              '!**/.netlify/**',
+              '!**/.vscode/**',
+              '!**/.github/**',
+              '!**/.github/workflows/**'
+            ) }}
+      - name: Build project
+        if: steps.cache-dist.outputs.cache-hit != 'true'
+        run: npm run build
+
+      # Deploy production build to Netlify with version number
+      - name: Deploy to Netlify
+        run: |
+          npx netlify-cli@17 deploy \
+            --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site=${{ secrets.NETLIFY_SITE_ID }} \
+            --message="${{ github.ref }}" \
+            --dir=dist \
+            --prod
