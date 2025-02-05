@@ -1,0 +1,23 @@
+---
+import ScreenColumn from "./ScreenColumn.astro";
+import TextLink from "./TextLink.astro";
+---
+
+<ScreenColumn
+  innerClass="flex flex-row justify-center gap-4 font-display"
+  outerClass="mt-auto pb-4 pt-16"
+  element="footer"
+>
+  <TextLink
+    href="https://bsky.app/profile/areweurbanyet.com"
+    class="md:text-lg"
+  >
+    BlueSky
+  </TextLink>
+  <TextLink href="https://github.com/areweurbanyet" class="md:text-lg">
+    GitHub
+  </TextLink>
+  <TextLink href="mailto:contact@areweurbanyet.com" class="md:text-lg">
+    Contact
+  </TextLink>
+</ScreenColumn>

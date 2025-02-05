@@ -1,0 +1,16 @@
+---
+import type { z } from "astro:content";
+import { props } from "utils/props";
+
+type Props = z.input<typeof props.className>;
+const { className } = props.className.parse(Astro.props);
+---
+
+<p
+  class:list={[
+    "font-display font-medium not-first:pt-6 md:text-lg md:not-first:pt-8",
+    className,
+  ]}
+>
+  <slot />
+</p>

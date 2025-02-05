@@ -1,0 +1,21 @@
+---
+import { props } from "utils/props";
+import { z } from "astro:content";
+
+const schema = z.intersection(
+  props.defaultElement("div"),
+  z.object({
+    innerClass: z.string().optional(),
+    outerClass: z.string().optional(),
+  }),
+);
+
+type Props = z.input<typeof schema>;
+const { Element, innerClass, outerClass } = schema.parse(Astro.props);
+---
+
+<div class:list={["flex w-full flex-col items-center", outerClass]}>
+  <Element class:list={["h-full w-full max-w-4xl", innerClass]}>
+    <slot />
+  </Element>
+</div>

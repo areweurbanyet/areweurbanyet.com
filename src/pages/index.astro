@@ -1,11 +1,45 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import ScreenColumn from "components/controls/ScreenColumn.astro";
+import Paragraph from "components/controls/Paragraph.astro";
+import TextLink from "components/controls/TextLink.astro";
+import Footer from "components/controls/Footer.astro";
+import Hero from "components/controls/Hero.astro";
+import Layout from "layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <Hero
+    subtitle="Measures and shows how communities become more urban-friendly."
+    title="Are We Urban Yet?"
+  />
+  <ScreenColumn outerClass="mt-16" innerClass="px-2" element="article">
+    <Paragraph>
+      Are We Urban Yet? is a project that aims to shed light on efforts to
+      reduce car dependency, promote better public transportation, and make it
+      easier to get around by walking or cycling in order to help both citizens
+      and policymakers alike make informed decisions and help shape cities to be
+      what you want.
+    </Paragraph>
+    <Paragraph>
+      Right now the project is under construction, and is entirely
+      volunteer-run. If you want to stay up-to-date with our progress, make sure
+      to follow us over on
+      <TextLink href="https://bsky.app/profile/areweurbanyet.com">
+        BlueSky!
+      </TextLink>
+      We'll be posting regular updates on how things are going as well as when new
+      content is released.
+    </Paragraph>
+    <Paragraph>
+      We greatly appreciate any support you're willing to give! If you believe
+      in our mission and want to help us keep the lights on, we're accepting
+      both one-time and regular donations on
+      <TextLink href="https://ko-fi/icorbrey">Ko-Fi</TextLink>
+      as well as sponsorships over on
+      <TextLink href="https://github.com/sponsors/icorbrey">GitHub.</TextLink>
+      We also appreciate any shout-outs over on BlueSky!
+    </Paragraph>
+    <Paragraph>Stay tuned!</Paragraph>
+  </ScreenColumn>
+  <Footer />
 </Layout>
