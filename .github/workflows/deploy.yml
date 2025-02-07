@@ -48,12 +48,10 @@ jobs:
           path: dist
           key: |
             ${{ runner.os }}-dist-${{ hashFiles(
-              '**/*',
-              '!**/node_modules/**',
-              '!**/.netlify/**',
-              '!**/.vscode/**',
-              '!**/.github/**',
-              '!**/.github/workflows/**'
+              'public/**',
+              'src/**',
+              '*.mjs',
+              '*.json'
             ) }}
       - name: Build project
         if: steps.cache-dist.outputs.cache-hit != 'true'
@@ -106,12 +104,10 @@ jobs:
           path: dist
           key: |
             ${{ runner.os }}-dist-${{ hashFiles(
-              '**/*',
-              '!**/node_modules/**',
-              '!**/.netlify/**',
-              '!**/.vscode/**',
-              '!**/.github/**',
-              '!**/.github/workflows/**'
+              'public/**',
+              'src/**',
+              '*.mjs',
+              '*.json'
             ) }}
       - name: Build project
         if: steps.cache-dist.outputs.cache-hit != 'true'
