@@ -1,0 +1,19 @@
+---
+import { z } from "astro:content";
+import { props } from "utils/props";
+
+const schema = z.intersection(props.className, props.defaultElement("div"));
+
+type Props = z.input<typeof schema>;
+const { className, Element } = schema.parse(Astro.props);
+---
+
+<Element
+  class:list={[
+    "prose font-display font-medium md:text-lg",
+    "prose-a:text-blue-700 prose-a:no-underline prose-a:hover:text-blue-800 prose-a:hover:underline",
+    className,
+  ]}
+>
+  <slot />
+</Element>

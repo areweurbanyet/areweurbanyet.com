@@ -15,7 +15,7 @@ const { Element, innerClass, outerClass } = schema.parse(Astro.props);
 ---
 
 <div class:list={["flex w-full flex-col items-center", outerClass]}>
-  <Element class:list={["h-full w-full max-w-4xl", innerClass]}>
+  <Element class:list={["h-full w-full max-w-xl md:max-w-3xl", innerClass]}>
     <slot />
   </Element>
 </div>

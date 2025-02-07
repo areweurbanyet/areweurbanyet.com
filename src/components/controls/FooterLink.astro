@@ -1,0 +1,14 @@
+---
+import { z } from "astro:content";
+
+const schema = z.object({
+  href: z.string(),
+});
+
+type Props = z.input<typeof schema>;
+const { href } = schema.parse(Astro.props);
+---
+
+<a class="text-blue-700 hover:text-blue-800 hover:underline md:text-lg" {href}>
+  <slot />
+</a>

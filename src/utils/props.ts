@@ -1,3 +1,4 @@
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import { z } from "astro:content";
 
 export const optionalClassProp = z
@@ -9,14 +10,9 @@ export const optionalClassProp = z
     ...rest,
   }));
 
-export const elements = z.enum([
-  "a",
-  "article",
-  "div",
-  "footer",
-  "header",
-  "section",
-  "span",
+export const elements = z.union([
+  z.enum(["a", "article", "div", "footer", "header", "section", "span"]),
+  z.custom<AstroComponentFactory>(), // Using HTMLElement as the type for Astro elements
 ]);
 
 export const optionalElementProp = (defaultElement: z.input<typeof elements>) =>

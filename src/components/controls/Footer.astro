@@ -1,6 +1,6 @@
 ---
 import ScreenColumn from "./ScreenColumn.astro";
-import TextLink from "./TextLink.astro";
+import FooterLink from "./FooterLink.astro";
 ---
 
 <ScreenColumn
@@ -8,16 +8,9 @@ import TextLink from "./TextLink.astro";
   outerClass="mt-auto pb-4 pt-16"
   element="footer"
 >
-  <TextLink
-    href="https://bsky.app/profile/areweurbanyet.com"
-    class="md:text-lg"
-  >
+  <FooterLink href="https://bsky.app/profile/areweurbanyet.com">
     BlueSky
-  </TextLink>
-  <TextLink href="https://github.com/areweurbanyet" class="md:text-lg">
-    GitHub
-  </TextLink>
-  <TextLink href="mailto:contact@areweurbanyet.com" class="md:text-lg">
-    Contact
-  </TextLink>
+  </FooterLink>
+  <FooterLink href="https://github.com/areweurbanyet">GitHub</FooterLink>
+  <FooterLink href="mailto:contact@areweurbanyet.com">Contact</FooterLink>
 </ScreenColumn>

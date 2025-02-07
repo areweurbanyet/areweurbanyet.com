@@ -1,0 +1,20 @@
+---
+import ScreenColumn from "components/controls/ScreenColumn.astro";
+import Footer from "components/controls/Footer.astro";
+import Prose from "components/controls/Prose.astro";
+import Hero from "components/controls/Hero.astro";
+import Layout from "layouts/Layout.astro";
+
+const { frontmatter } = Astro.props;
+const { title, subtitle } = frontmatter;
+---
+
+<Layout>
+  <article class="flex w-full flex-col">
+    <Hero {title} {subtitle} />
+    <ScreenColumn outerClass="mt-16" innerClass="px-2" element={Prose}>
+      <slot />
+    </ScreenColumn>
+  </article>
+  <Footer />
+</Layout>
